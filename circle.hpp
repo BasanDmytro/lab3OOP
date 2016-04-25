@@ -1,10 +1,17 @@
-#ifndef CIRCLE_H
-#define CIRCLE_H
+//
+//  circle.hpp
+//  lab3
+//
+//  Created by Дима Басан on 25.04.16.
+//  Copyright © 2016 Дима Басан. All rights reserved.
+//
 
-#include "shape.h"
-#include "Vector.h"
+#ifndef circle_hpp
+#define circle_hpp
+
+#include "shape.hpp"
+#include "vector.hpp"
 #include <fstream>
-
 
 class Circle: public Shape {
 protected:
@@ -20,7 +27,7 @@ public:
     virtual float getMinX() const;
     virtual float getMinY() const;
     virtual float getMaxX() const;
-    virtual float getMaxY() const;    
+    virtual float getMaxY() const;
     
     Circle();
     Circle(float x, float y, float radius, float r, float g, float b, float alpha);
@@ -44,4 +51,4 @@ public:
     bool operator == (const Circle& circle) const;
 };
 
-#endif
+#endif /* circle_hpp */

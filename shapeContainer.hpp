@@ -1,11 +1,18 @@
+//
+//  shapeContainer.hpp
+//  lab3
+//
+//  Created by Дима Басан on 25.04.16.
+//  Copyright © 2016 Дима Басан. All rights reserved.
+//
 
-#ifndef SHAPE_CONTAINER_H
-#define SHAPE_CONTAINER_H
+#ifndef shapeContainer_hpp
+#define shapeContainer_hpp
 
-#include "shape.h"
-#include "rectangle.h"
-#include "circle.h"
-#include "Vector.h"
+#include "shape.hpp"
+#include "rectangle.hpp"
+#include "circle.hpp"
+#include "vector.hpp"
 #include <fstream>
 
 class ShapeContainer: public Shape {
@@ -13,16 +20,11 @@ protected:
     Vector<Shape*> shapesTrack;
     Vector<Shape*> shapes;
 public:
-    
     bool selected;
-    
     bool isSelected() const;
-    
     void setSelected(bool selected);
     
     Vector<Shape*> getShapes();
-    
-    void recalculateBounds1();
     
     ShapeContainer();
     
@@ -59,4 +61,5 @@ public:
     virtual void move(int x, int y);
 };
 
-#endif
+
+#endif /* shapeContainer_hpp */

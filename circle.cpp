@@ -1,4 +1,12 @@
-#include "circle.h"
+//
+//  circle.cpp
+//  lab3
+//
+//  Created by Дима Басан on 25.04.16.
+//  Copyright © 2016 Дима Басан. All rights reserved.
+//
+
+#include "circle.hpp"
 #include <GLUT/glut.h>
 #include <math.h>
 #include <string>
@@ -148,7 +156,7 @@ void Circle::changeColor() {
 }
 
 void Circle::move(int x, int y) {
-   this -> setLocation(this -> getX() + x, this -> getY() + y);
+    this -> setLocation(this -> getX() + x, this -> getY() + y);
 }
 
 void Circle::setVisible(bool visible) {
@@ -160,3 +168,4 @@ void Circle::setVisible(bool visible) {
         this -> alpha = 0.2;
     }
 }
+

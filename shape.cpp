@@ -1,5 +1,24 @@
-#include "shape.h"
-#include <vector>
+//
+//  shape.cpp
+//  lab3
+//
+//  Created by Дима Басан on 25.04.16.
+//  Copyright © 2016 Дима Басан. All rights reserved.
+//
+
+#include "shape.hpp"
+
+void  Shape::setVisible(bool visible) { }
+
+void Shape::draw() { };
+
+void Shape::changeColor() { }
+
+void Shape::toStandart() { }
+
+void Shape::move(int x, int y) { }
+
+void Shape::saveToFile() { }
 
 Shape::Shape() {
     this -> setLocation(0, 0);
@@ -34,7 +53,7 @@ float Shape::getX() const{ return x; }
 
 float Shape::getY() const{ return y; }
 
-void  Shape::setLocation(float x, float y) { 
+void  Shape::setLocation(float x, float y) {
     this -> x = x;
     this -> y = y;
 }
@@ -43,7 +62,7 @@ float Shape::getWidth() const{ return w; }
 
 float Shape::getHeight() const{ return h; }
 
-void  Shape::setSize(float w, float h){ 
+void  Shape::setSize(float w, float h){
     this -> h = h;
     this -> w = w;
 }
@@ -57,8 +76,6 @@ float Shape::getMaxX() const { return this -> x + (this -> w); }
 float Shape::getMaxY() const { return this -> y + (this -> h); }
 
 bool  Shape::isVisible() const { return visible; }
-
-void  Shape::setVisible(bool visible) { }
 
 float Shape::getRed() const { return red; }
 
@@ -75,10 +92,6 @@ void  Shape::setColor(float r, float g, float b, float alpha) {
     this -> alpha = alpha;
 }
 
-void Shape::draw() { };
-
-void Shape::changeColor() { }
-
 Shape& Shape::operator=(const Shape& shape) {
     this -> setLocation(shape.getX(), shape.getY());
     this -> setSize(shape.getHeight(), shape.getWidth());
@@ -91,8 +104,6 @@ void Shape::setScale(float scalef) {
     this -> h *= scalef;
     this -> w *= scalef;
 }
-
-void Shape::toStandart() { }
 
 bool Shape::operator==(const Shape& shape) const {
     if (this -> getX() == shape.getX() && this -> getY() == shape.getY() &&
@@ -110,7 +121,3 @@ bool Shape::operator==(const Shape& shape) const {
 void Shape::setSelected(bool selected) {
     this -> selected = selected;
 }
-
-void Shape::move(int x, int y) { }
-
-void Shape::saveToFile() { }

@@ -1,5 +1,12 @@
+//
+//  shapeContainer.cpp
+//  lab3
+//
+//  Created by Дима Басан on 25.04.16.
+//  Copyright © 2016 Дима Басан. All rights reserved.
+//
 
-#include "shape_container.h"
+#include "shapeContainer.hpp"
 #include <GLUT/GLUT.h>
 #include <iostream>
 
@@ -33,7 +40,7 @@ void ShapeContainer::eraseAll() {
         delete shapes[i];
 }
 
-ShapeContainer::~ShapeContainer() {}
+ShapeContainer::~ShapeContainer() { }
 
 void ShapeContainer::setScale(float scalef) {
     unsigned long shapesSize = shapes.size();
@@ -65,7 +72,7 @@ Vector<Shape*> ShapeContainer::getShapes() {
 
 void ShapeContainer::add(Shape* shape) {
     this -> shapes.push_back(shape);
-    if (shapes.size() > 1) 
+    if (shapes.size() > 1)
         shape -> setColor(shapes[0] -> getRed(), shapes[0] -> getGreen(), shapes[0] -> getBlue(), shapes[0] -> getAlpha());
     this -> recalculateBounds();
 }
@@ -124,7 +131,6 @@ void ShapeContainer::setVisible(bool visible) {
     }
     for (int i = 0; i < shapes.size(); i++)
         shapes[i] -> setVisible(visible);
-
 }
 
 void ShapeContainer::saveToFile() {
@@ -136,8 +142,6 @@ void ShapeContainer::saveToFile() {
     for (int i = 0; i < shapes.size(); i++)
         shapes[i] -> saveToFile();
     out.close();
-    
-   
 }
 
 void ShapeContainer::changeColor() {

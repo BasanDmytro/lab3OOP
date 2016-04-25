@@ -1,4 +1,12 @@
-#include "rectangle.h"
+//
+//  rectangle.cpp
+//  lab3
+//
+//  Created by Дима Басан on 25.04.16.
+//  Copyright © 2016 Дима Басан. All rights reserved.
+//
+
+#include "rectangle.hpp"
 #include <math.h>
 #include <ctime>
 #include <GLUT/glut.h>
@@ -35,7 +43,7 @@ Rectangle& Rectangle::operator=(const Rectangle& rect) {
     this -> setSize(rect.getWidth(), rect.getHeight());
     this -> setColor(rect.getRed(), rect.getGreen(), rect.getBlue(), rect.getAlpha());
     this -> setVisible(rect.isVisible());
-    return *this;    
+    return *this;
 }
 
 bool Rectangle::operator==(const Rectangle& rect) const {

@@ -1,16 +1,22 @@
-#include <math.h>
-#include "rectangle.h"
-#include "circle.h"
-#include "shape_container.h"
+//
+//  main.cpp
+//  lab3
+//
+//  Created by Дима Басан on 25.04.16.
+//  Copyright © 2016 Дима Басан. All rights reserved.
+//
 
+#include <GLUT/glut.h>
+#include "rectangle.hpp"
+#include "circle.hpp"
+#include "shapeContainer.hpp"
+#include "vector.hpp"
 #include <iostream>
 #include <ctime>
-#include <GLUT/glut.h>
+#include <math.h>
 #include <fstream>
 #include <string>
-#include "Vector.h"
 using namespace std;
-
 
 Vector<Shape*> vec;
 Shape *currVecCont;
@@ -28,52 +34,42 @@ bool boolForMerge = false;
 int numbersOfObgectForMerge = 0;
 int countOfAgregat = 1;
 
-Shape* setCurrentContainer1(Shape *cont){
+Shape* setCurrentContainer(Shape *cont){
     currVecCont = cont;
     currVecCont -> setSelected(true);
     currVecCont -> setVisible(true);
-    
-    for (int i = 0; i < vec.size(); i++) {
-        if (currVecCont != vec[i]) {
-            //  (*it)->setSelected(false); //видимость контура
-            // *it) -> alpha = 0.5;
-            vec[i] -> setVisible(false); //видимость обьекта
-            //   (*it) -> alpha = 0.5;
-
-        }
-    }
     
     Vector<Shape*>::iterator it;
     for (it = vec.begin(); it < vec.end(); it++)
         if (currVecCont != (*it)) {
             //  (*it)->setSelected(false); //видимость контура
-          //  (*it) -> alpha = 0.5;
+            //  (*it) -> alpha = 0.5;
             (*it) -> setVisible(false); //видимость обьекта
             //   (*it) -> alpha = 0.5;
         }
     return currVecCont;
 }
 
-Shape* selectNext1() {
+Shape* selectNext() {
     if (currVecCont == vec.back())
-        return setCurrentContainer1(vec.front());
+        return setCurrentContainer(vec.front());
     else {
         unsigned long shapeSize = vec.size() - 1;
         for(int i = 0; i < shapeSize; i++) {
             if (currVecCont == vec[i])
-                return setCurrentContainer1(vec[i + 1]);
+                return setCurrentContainer(vec[i + 1]);
         }
     }
     return 0;
 }
 
-void animateCurrentShapeCont1() {
+void animateCurrentShapeCont() {
     if (animateCurr) {
         currVecCont -> move(1, 1);
     }
 }
 
-void mergeShapesWithCurrent2() {
+void mergeShapesWithCurrent() {
     int currForMerge = 0;
     for (int i = 0; i < vec.size(); i++) {
         Shape* stepVecCont = vec[i];
@@ -94,10 +90,10 @@ void mergeShapesWithCurrent2() {
     Shape *pp = new ShapeContainer(vecForMerge);
     pp -> setSelected(true);
     vec.push_back(pp);
-    setCurrentContainer1(pp);
+    setCurrentContainer(pp);
 }
 
-void changeShapes1() {
+void changeShapes() {
     float x11 = currVecCont -> getMinX();
     float y11 = currVecCont -> getMinY();
     float x12 = currVecCont -> getMaxX();
@@ -312,14 +308,13 @@ void loadFromFile() {
 void render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     Vector<Shape*>::iterator it;
-    
     for (int i = 0; i < vec.size(); i++) {
         if (vec[i] != currVecCont) {
             vec[i] -> draw();
         }
     }
     if (currVecCont != NULL) currVecCont -> draw();
-        animateCurrentShapeCont1();
+    animateCurrentShapeCont();
     glutSwapBuffers();
 }
 
@@ -337,35 +332,26 @@ void idle(){
 }
 
 void processNormalKeys(unsigned char key, int x, int y) {
-    cout << "pressed key " << key << " [" << (int)key << "]" << ", ";
     if (key == '1') {
-        cout << "adding rectangle to scene and make it selected " << endl;
         Shape *newShape = new Rectangle(winW / 2, winH / 2, 50, 50, 0.0, 0.0, 1.0, 1.0);
         newShape -> setVisible(true);
         vec.push_back(newShape);
-        setCurrentContainer1(newShape);
+        setCurrentContainer(newShape);
     } else if (key == '2') {
-        cout << "adding circle to scene and make it selected " << endl;
         Shape *newCont = new Circle(winW / 2, winH / 2, 50, 0.0, 0.0, 1.0, 1.0);
         newCont -> setVisible(true);
         vec.push_back(newCont);
-        setCurrentContainer1(newCont);
+        setCurrentContainer(newCont);
     } else if ((int)key == 9) {
-        cout << "selecting next shape " << endl;
-        selectNext1();
-        //selectNext();
+        selectNext();
     } else if (key == 'm' || key == 'M') {
-        cout << "merging current shape " << endl;
-        mergeShapesWithCurrent2();
+        mergeShapesWithCurrent();
     } else if (key == 'c' || key == 'C') {
-        cout << "change color " << endl;
         currVecCont -> changeColor();
     } else if (key == 'p' || key == 'P') {
         if (animateCurr) {
-            cout << "stopping animate current shape " << endl;
             animateCurr = false;
         } else {
-            cout << "starting animate current shape " << endl;
             animateCurr = true;
         }
     } else if (key == 'z' || key == 'Z') {
@@ -384,7 +370,7 @@ void processNormalKeys(unsigned char key, int x, int y) {
         currVecCont -> setScale(0.5);
     } else if (key == 'q' || key == 'Q') {
         save();
-    
+        
     } else if (key == 's' || key == 'S') {
         currVecCont -> toStandart();
     } else if (key == 'l' || key == 'l') {
@@ -406,50 +392,42 @@ void processNormalKeys(unsigned char key, int x, int y) {
 }
 
 void processSpecialKeys(int key, int x, int y) {
-        if (key == 101) {
-        //двигаем фигуру вверх
-        cout << "moving shape up " << endl;
-            if (boolForTrack) {
-                currVecCont -> move(0, 10);
-                currVecCont -> trace(currVecCont);
-            } else {
-                currVecCont -> move(0, 10);
-            }
-            changeShapes1();
+    if (key == 101) {
+        if (boolForTrack) {
+            currVecCont -> move(0, 10);
+            currVecCont -> trace(currVecCont);
+        } else {
+            currVecCont -> move(0, 10);
         }
-        else if (key == 102) {
-            //двигаем фигуру вправо
-            cout << "moving shape right " << endl;
-            if (boolForTrack) {
-                currVecCont -> move(10, 0);
-                currVecCont -> trace(currVecCont);
-            } else {
-                currVecCont -> move(10, 0);
-            }
-            changeShapes1();
+        changeShapes();
+    }
+    else if (key == 102) {
+        if (boolForTrack) {
+            currVecCont -> move(10, 0);
+            currVecCont -> trace(currVecCont);
+        } else {
+            currVecCont -> move(10, 0);
         }
-        else if (key == 103) {
-        //двигаем фигуру вниз
-        cout << "moving shape down " << endl;
-            if (boolForTrack) {
-                currVecCont -> move(0, -10);
-                currVecCont -> trace(currVecCont);
-            } else {
-                currVecCont -> move(0, -10);
-            }
-            changeShapes1();
+        changeShapes();
+    }
+    else if (key == 103) {
+        if (boolForTrack) {
+            currVecCont -> move(0, -10);
+            currVecCont -> trace(currVecCont);
+        } else {
+            currVecCont -> move(0, -10);
         }
-        else if (key == 100) {
-            //двигаем фигуру влево
-            cout << "moving shape left " << endl;
-            if (boolForTrack) {
-                currVecCont -> move(-10, 0);
-                currVecCont -> trace(currVecCont);
-            } else {
-                currVecCont -> move(-10, 0);
-            }
-            changeShapes1();
+        changeShapes();
+    }
+    else if (key == 100) {
+        if (boolForTrack) {
+            currVecCont -> move(-10, 0);
+            currVecCont -> trace(currVecCont);
+        } else {
+            currVecCont -> move(-10, 0);
         }
+        changeShapes();
+    }
 }
 
 int main (int argc, char ** argv) {
@@ -457,10 +435,10 @@ int main (int argc, char ** argv) {
     glutInit(&argc, argv);
     winW = 640; winH = 480;
     Shape *shapes = new Circle(winW / 2, winH / 2, 50, 0.0, 0.0, 1.0, 1.0);
-   // shapes -> setVisible(true);
+    shapes -> setVisible(true);
     shapes -> setSelected(true);
     vec.push_back(shapes);
-    setCurrentContainer1(shapes);
+    setCurrentContainer(shapes);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);

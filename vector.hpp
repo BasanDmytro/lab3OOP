@@ -1,13 +1,14 @@
 //
-//  Header.h
-//  test
+//  vector.hpp
+//  lab3
 //
-//  Created by Дима Басан on 24.04.16.
+//  Created by Дима Басан on 25.04.16.
 //  Copyright © 2016 Дима Басан. All rights reserved.
 //
 
-#ifndef Header_h
-#define Header_h
+#ifndef vector_hpp
+#define vector_hpp
+
 template <typename T>
 class Vector {
     T* arr;
@@ -15,7 +16,7 @@ class Vector {
     int Size;
     bool resize();
 public:
-class iterator {
+    class iterator {
     protected:
         T* value;
     public:
@@ -29,20 +30,16 @@ class iterator {
         bool operator!=(const iterator &another);
         bool operator=(const iterator &another);
         T    operator*();
-};
+    };
     Vector();
     Vector(const Vector<T> &Q);
     T operator[](const int &index);
-    
     void push_back(const T &value);
     void clear();
-    
     T back();
     T front();
-    
     iterator begin();
     iterator end();
-    
     int size();
     bool empty();
     void erase(int);
@@ -50,9 +47,7 @@ class iterator {
 };
 
 template <typename T>
-Vector<T>::Vector() : Size(0), capacity(0) {
-   // arr = NULL;
-}
+Vector<T>::Vector() : Size(0), capacity(0) { }
 
 template <typename T>
 Vector<T>::~Vector() {
@@ -85,7 +80,6 @@ template <typename T>
 Vector<T>::Vector(const Vector<T> &Q) {
     this->Size = Q.Size;
     this->capacity = Q.capacity;
-    
     arr = new T[capacity];
     for (int i = 0; i != Size; i++) {
         arr[i] = Q.arr[i];
@@ -168,7 +162,7 @@ bool Vector<T>::iterator::operator<(const iterator &another) {
 
 template <typename T>
 bool Vector<T>::iterator::operator<=(const iterator &another) {
-   return (value <= another.value);
+    return (value <= another.value);
 }
 
 template <typename T>
@@ -189,4 +183,4 @@ void Vector<T>::erase(int position) {
     Size--;
 }
 
-#endif /* Header_h */
+#endif /* vector_hpp */
