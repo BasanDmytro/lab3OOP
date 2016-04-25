@@ -135,10 +135,10 @@ void ShapeContainer::setVisible(bool visible) {
 
 void ShapeContainer::saveToFile() {
     std::ofstream out;
-    out.open("/Users/admin/Desktop/lab3 чек/data11.txt", std::ios_base::app );
+    out.open("/Users/admin/Desktop/lab3 чек/data.txt", std::ios_base::app );
     out << "A" << std::endl;
     out.close();
-    out.open("/Users/admin/Desktop/lab3 чек/data11.txt", std::ios_base::app );
+    out.open("/Users/admin/Desktop/lab3 чек/data.txt", std::ios_base::app );
     for (int i = 0; i < shapes.size(); i++)
         shapes[i] -> saveToFile();
     out.close();

@@ -61,7 +61,7 @@ bool Rectangle::operator==(const Rectangle& rect) const {
 
 void Rectangle::saveToFile() {
     std::ofstream out;
-    out.open("/Users/admin/Desktop/lab3 чек/data11.txt", std::ios_base::app );
+    out.open("/Users/admin/Desktop/lab3 чек/data.txt", std::ios_base::app );
     out << "R" << " ";
     out << x << " " << y << " ";
     out << h << " " << w << " ";
