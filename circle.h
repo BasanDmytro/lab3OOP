@@ -2,14 +2,15 @@
 #define CIRCLE_H
 
 #include "shape.h"
-#include <vector>
+#include "Vector.h"
 #include <fstream>
+
 
 class Circle: public Shape {
 protected:
     float radius;
     float standartRadius;
-    std::vector<Shape*> shapesTrack;
+    Vector<Shape*> shapesTrack;
 public:
     float getRadius() const;
     void setRadius(float radius);

@@ -2,15 +2,17 @@
 #include "rectangle.h"
 #include "circle.h"
 #include "shape_container.h"
-#include <vector>
+
 #include <iostream>
 #include <ctime>
 #include <GLUT/glut.h>
 #include <fstream>
 #include <string>
+#include "Vector.h"
 using namespace std;
 
-vector<Shape*> vec;
+
+Vector<Shape*> vec;
 Shape *currVecCont;
 
 bool visibleCurr = true;
@@ -30,7 +32,18 @@ Shape* setCurrentContainer1(Shape *cont){
     currVecCont = cont;
     currVecCont -> setSelected(true);
     currVecCont -> setVisible(true);
-    vector<Shape*>::iterator it;
+    
+    for (int i = 0; i < vec.size(); i++) {
+        if (currVecCont != vec[i]) {
+            //  (*it)->setSelected(false); //видимость контура
+            // *it) -> alpha = 0.5;
+            vec[i] -> setVisible(false); //видимость обьекта
+            //   (*it) -> alpha = 0.5;
+
+        }
+    }
+    
+    Vector<Shape*>::iterator it;
     for (it = vec.begin(); it < vec.end(); it++)
         if (currVecCont != (*it)) {
             //  (*it)->setSelected(false); //видимость контура
@@ -67,15 +80,15 @@ void mergeShapesWithCurrent2() {
         if (currVecCont == stepVecCont)
             currForMerge = i;
     }
-    vector<Shape*> vecForMerge;
+    Vector<Shape*> vecForMerge;
     vecForMerge.push_back(vec[currForMerge]);
     vecForMerge.push_back(vec[numbersOfObgectForMerge]);
     if (currForMerge > numbersOfObgectForMerge) {
-        vec.erase(vec.begin() + currForMerge);
-        vec.erase(vec.begin() + numbersOfObgectForMerge);
+        vec.erase(currForMerge);
+        vec.erase(numbersOfObgectForMerge);
     } else {
-        vec.erase(vec.begin() + numbersOfObgectForMerge);
-        vec.erase(vec.begin() + currForMerge);
+        vec.erase(numbersOfObgectForMerge);
+        vec.erase(currForMerge);
         
     }
     Shape *pp = new ShapeContainer(vecForMerge);
@@ -118,9 +131,9 @@ void save() {
     ofstream out;
     out.open("/Users/admin/Desktop/lab3 чек/data11.txt");
     out.close();
-    vector<Shape*>::iterator it;
-    for(it = vec.begin(); it < vec.end(); it++) {
-        (*it) -> saveToFile();
+    Vector<Shape*>::iterator it;
+    for (int i = 0; i < vec.size(); i++) {
+        vec[i] -> saveToFile();
     }
 }
 
@@ -157,9 +170,9 @@ void loadFromFile() {
         float blue = 0;
         float alpha = 0;
         if (str[i][0] == 'A') {
-            vector<string> arr1;
-            vector<string> arr2;
-            vector<Shape*> vecForMerge;
+            Vector<string> arr1;
+            Vector<string> arr2;
+            Vector<Shape*> vecForMerge;
             string delim(" ");
             size_t prev = 0;
             size_t next;
@@ -238,7 +251,7 @@ void loadFromFile() {
             str[i + 2] = "";
         }
         if (str[i][0] == 'C') {
-            vector<string> arr;
+            Vector<string> arr;
             string delim(" ");
             size_t prev = 0;
             size_t next;
@@ -265,7 +278,7 @@ void loadFromFile() {
             }
             vec.push_back(shape);
         } else if (str[i][0] == 'R') {
-            vector<string> arr;
+            Vector<string> arr;
             string delim(" ");
             size_t prev = 0;
             size_t next;
@@ -298,10 +311,11 @@ void loadFromFile() {
 
 void render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    vector<Shape*>::iterator it;
-    for(it = vec.begin(); it < vec.end(); it++) {
-        if ((*it) != currVecCont) {
-            (*it) -> draw();
+    Vector<Shape*>::iterator it;
+    
+    for (int i = 0; i < vec.size(); i++) {
+        if (vec[i] != currVecCont) {
+            vec[i] -> draw();
         }
     }
     if (currVecCont != NULL) currVecCont -> draw();

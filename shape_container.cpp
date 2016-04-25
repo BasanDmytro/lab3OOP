@@ -21,7 +21,7 @@ ShapeContainer::ShapeContainer(Shape* shape) {
     this -> recalculateBounds();
 }
 
-ShapeContainer::ShapeContainer(std::vector<Shape*> xx) {
+ShapeContainer::ShapeContainer(Vector<Shape*> xx) {
     for (auto i = 0; i < xx.size(); ++i) {
         shapes.push_back(xx[i]);
     }
@@ -59,7 +59,7 @@ void ShapeContainer::setSelected(bool selected) {
     this -> selected = selected;
 }
 
-std::vector<Shape*> ShapeContainer::getShapes() {
+Vector<Shape*> ShapeContainer::getShapes() {
     return this -> shapes;
 }
 
@@ -71,9 +71,8 @@ void ShapeContainer::add(Shape* shape) {
 }
 
 void ShapeContainer::remove(Shape* shape) {
-    std::vector<Shape*>::iterator it;
-    for(it = shapes.begin(); it < shapes.end(); it++)
-        if (*it == shape) shapes.erase(it);
+    for (int i = 0; i < shapes.size(); i++)
+        if (shapes[i] == shape) shapes.erase(i);
     this -> recalculateBounds();
 }
 
@@ -95,14 +94,12 @@ void ShapeContainer::recalculateBounds() {
 
 void ShapeContainer::move(int x, int y) {
     this -> setLocation(this -> getX() + x, this -> getY() + y);
-    std::vector<Shape*>::iterator it;
-    for (it = shapes.begin(); it < shapes.end(); it++)
-        (*it) -> move(x, y);
+    for (int i = 0; i < shapes.size(); i++)
+        shapes[i] -> move(x, y);
 }
 
 void ShapeContainer::trace(Shape *object) {
     ShapeContainer *cir = new ShapeContainer(object);
-    std::vector<Shape*>::iterator it;
     for (int i = 0; i <= cir -> shapes.size(); i++) {
         shapes[i] -> trace(shapes[i]);
     }
@@ -110,9 +107,8 @@ void ShapeContainer::trace(Shape *object) {
 
 void ShapeContainer::draw() {
     if (this -> isVisible()){
-        std::vector<Shape*>::iterator it;
-        for (it = shapes.begin(); it < shapes.end(); it++) {
-            (*it) -> draw();
+        for (int i = 0; i < shapes.size(); i++) {
+            shapes[i] -> draw();
         }
     }
     glFlush();
@@ -126,9 +122,8 @@ void ShapeContainer::setVisible(bool visible) {
         this -> visible = true;
         this -> alpha = 0.2;
     }
-    std::vector<Shape*>::iterator it;
-    for (it = shapes.begin(); it < shapes.end(); it++)
-        (*it) -> setVisible(visible);
+    for (int i = 0; i < shapes.size(); i++)
+        shapes[i] -> setVisible(visible);
 
 }
 
@@ -138,9 +133,8 @@ void ShapeContainer::saveToFile() {
     out << "A" << std::endl;
     out.close();
     out.open("/Users/admin/Desktop/lab3 чек/data11.txt", std::ios_base::app );
-    std::vector<Shape*>::iterator it;
-    for (it = shapes.begin(); it < shapes.end(); it++)
-        (*it) -> saveToFile();
+    for (int i = 0; i < shapes.size(); i++)
+        shapes[i] -> saveToFile();
     out.close();
     
    
@@ -151,7 +145,6 @@ void ShapeContainer::changeColor() {
     float green = rand()/(float)RAND_MAX;
     float blue = rand()/(float)RAND_MAX;
     this -> setColor(red, green, blue, alpha);
-    std::vector<Shape*>::iterator it;
-    for (it = shapes.begin(); it < shapes.end(); it++)
-        (*it) -> setColor(red, green, blue, alpha);
+    for (int i = 0; i < shapes.size(); i++)
+        shapes[i] -> setColor(red, green, blue, alpha);
 }

@@ -5,13 +5,13 @@
 #include "shape.h"
 #include "rectangle.h"
 #include "circle.h"
-#include <vector>
+#include "Vector.h"
 #include <fstream>
 
 class ShapeContainer: public Shape {
 protected:
-    std::vector<Shape*> shapesTrack;
-    std::vector<Shape*> shapes;
+    Vector<Shape*> shapesTrack;
+    Vector<Shape*> shapes;
 public:
     
     bool selected;
@@ -20,7 +20,7 @@ public:
     
     void setSelected(bool selected);
     
-    std::vector<Shape*> getShapes();
+    Vector<Shape*> getShapes();
     
     void recalculateBounds1();
     
@@ -30,7 +30,7 @@ public:
     
     ShapeContainer(Shape* shape);
     
-    ShapeContainer(std::vector<Shape*> xx);
+    ShapeContainer(Vector<Shape*> xx);
     
     ~ShapeContainer();
     

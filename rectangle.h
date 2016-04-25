@@ -2,12 +2,12 @@
 #define RECTANGLE_H
 
 #include "shape.h"
-#include <vector>
+#include "Vector.h"
 #include <fstream>
 
 class Rectangle: public Shape {
 protected:
-    std::vector<Shape*> shapesTrack;
+    Vector<Shape*> shapesTrack;
 public:
     Rectangle(): Shape() {};
     
