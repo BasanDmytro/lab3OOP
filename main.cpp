@@ -125,7 +125,7 @@ void changeShapes() {
 
 void save() {
     ofstream out;
-    out.open("/Users/admin/Desktop/lab3 чек/data.txt");
+    out.open("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt");
     out.close();
     Vector<Shape*>::iterator it;
     for (int i = 0; i < vec.size(); i++) {
@@ -137,7 +137,7 @@ void loadFromFile() {
     ifstream in;
     auto countOfString = 0;
     char S;
-    in.open("/Users/admin/Desktop/lab3 чек/data.txt");
+    in.open("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt");
     while(!in.eof()) {
         in.get(S);
         if (S == '\n') {
@@ -146,8 +146,8 @@ void loadFromFile() {
     }
     in.close();
     auto ii = 0;
-    string *str = new string[countOfString];
-    ifstream fin1("/Users/admin/Desktop/lab3 чек/data.txt");
+    string *str = new string[countOfString+1];
+    ifstream fin1("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt");
     while (fin1) {
         getline(fin1, str[ii]);
         ii++;
@@ -301,6 +301,7 @@ void loadFromFile() {
                 shape1 -> setVisible(true);
             }
             vec.push_back(shape1);
+            setCurrentContainer(shape1);
         }
     }
 }
