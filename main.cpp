@@ -60,13 +60,34 @@ Shape* selectNext() {
     return 0;
 }
 
+void findCollisions() {
+    for(int i = 0; i < vec.size(); i++) {
+        if (boolForCheck) {
+            if (currShape -> collided(vec[i]) && vec[i] != currShape) {
+                if (boolForInsert == false) {
+                    currShape -> setScale(0.5);
+                    boolForInsert = true;
+                    boolForCheck = false;
+                } else {
+                    currShape -> setScale(2.0);
+                    boolForInsert = false;
+                    boolForCheck = false;
+                }
+            }
+            boolForCheck = true;
+        }
+    }
+}
+
 void animateCurrentShape() {
     if (animateCurr) {
          if (boolForTrack) {
              currShape -> move(1, 1);
              currShape -> trace(currShape);
+             findCollisions();
          } else {
              currShape -> move(1, 1);
+             findCollisions();
          }
     }
 }
@@ -100,25 +121,6 @@ void save() {
     out.close();
     for (int i = 0; i < vec.size(); i++) {
         vec[i] -> saveToFile();
-    }
-}
-
-void findCollisions() {
-    for(int i = 0; i < vec.size(); i++) {
-        if (boolForCheck) {
-            if (currShape -> collided(vec[i]) && vec[i] != currShape) {
-                if (boolForInsert == false) {
-                    currShape -> setScale(0.5);
-                    boolForInsert = true;
-                    boolForCheck = false;
-                } else {
-                    currShape -> setScale(2.0);
-                    boolForInsert = false;
-                    boolForCheck = false;
-                }
-            }
-            boolForCheck = true;
-        }
     }
 }
 
