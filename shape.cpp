@@ -122,10 +122,7 @@ bool Shape::collided(Shape *shape) {
     boundaryCoordinates(left, right, down, top);
     float l, r, d, t;
     shape->boundaryCoordinates(l, r, d, t);
-    if (r > left &&
-        l < right &&
-        t > down &&
-        d < top)
+    if (r > left && l < right && t > down && d < top)
         return true;
     return false;
 }
