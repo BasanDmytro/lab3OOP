@@ -27,9 +27,9 @@ ShapeContainer::ShapeContainer(Shape* shape) {
     this -> add(shape);
 }
 
-ShapeContainer::ShapeContainer(Vector<Shape*> xx) {
-    for (int i = 0; i < xx.size(); ++i) {
-        shapes.push_back(xx[i]);
+ShapeContainer::ShapeContainer(Vector<Shape*> forCopy) {
+    for (int i = 0; i < forCopy.size(); ++i) {
+        shapes.push_back(forCopy[i]);
     }
 }
 

@@ -31,7 +31,7 @@ public:
     
     ShapeContainer(Shape* shape);
     
-    ShapeContainer(Vector<Shape*> xx);
+    ShapeContainer(Vector<Shape*> forCopy);
     
     ~ShapeContainer();
     
