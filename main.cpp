@@ -65,11 +65,17 @@ Shape* selectNext() {
 
 void animateCurrentShapeCont() {
     if (animateCurr) {
-        currVecCont -> move(1, 1);
+         if (boolForTrack) {
+
+             currVecCont -> move(1, 1);
+             currVecCont -> trace(currVecCont);
+         } else {
+             currVecCont -> move(1, 1);
+         }
     }
 }
 
-void mergeShapesWithCurrent() {
+void mergeShapes() {
     int currForMerge = 0;
     for (int i = 0; i < vec.size(); i++) {
         Shape* stepVecCont = vec[i];
@@ -107,7 +113,7 @@ void changeShapes() {
             float y22 = stepShape -> getMaxY();
             if (boolForCheck)
                 //проверям условия пересечения
-                if (x11 < x22 && x12 > x21 && y11 < y22 && y12 > y21) {
+                if (fabs(x11) < fabs(x22) && fabs(x12) > fabs(x21) && fabs(y11) < fabs(y22) && fabs(y12) > fabs(y21)) {
                     if (boolForInsert == false) {
                         currVecCont -> setScale(0.5);
                         boolForInsert = true;
@@ -146,7 +152,7 @@ void loadFromFile() {
     }
     in.close();
     auto ii = 0;
-    string *str = new string[countOfString+1];
+    string *str = new string[countOfString + 1];
     ifstream fin1("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt");
     while (fin1) {
         getline(fin1, str[ii]);
@@ -346,7 +352,7 @@ void processNormalKeys(unsigned char key, int x, int y) {
     } else if ((int)key == 9) {
         selectNext();
     } else if (key == 'm' || key == 'M') {
-        mergeShapesWithCurrent();
+        mergeShapes();
     } else if (key == 'c' || key == 'C') {
         currVecCont -> changeColor();
     } else if (key == 'p' || key == 'P') {
