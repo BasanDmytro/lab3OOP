@@ -39,14 +39,14 @@ Circle::Circle(float x, float y, float radius, float r, float g, float b, float 
 }
 
 Circle::Circle(const Circle& circle) {
-    this -> setLocation(circle.getX(), circle.getY());
+    this -> setLocation(circle.x, circle.y);
     this -> setRadius(circle.getRadius());
     this -> setVisible(circle.isVisible());
     this -> setColor(circle.getRed(), circle.getGreen(), circle.getBlue(), circle.getAlpha());
 }
 
 Circle::Circle(const Shape& circle) {
-    this -> setLocation(circle.getX(), circle.getY());
+    this -> setLocation(circle.x, circle.y);
     this -> setVisible(circle.isVisible());
     this -> setColor(circle.getRed(), circle.getGreen(), circle.getBlue(), circle.getAlpha());
     this -> radius = 50;
@@ -79,14 +79,6 @@ void Circle::toStandart() {
     this -> alpha = standartAlpha;
 }
 
-float Circle::getMinX() const { return x - radius; }
-
-float Circle::getMinY() const { return y - radius; }
-
-float Circle::getMaxX() const { return x + radius; }
-
-float Circle::getMaxY() const { return y + radius; }
-
 void Circle::trace(Shape *object) {
     Circle *cir = new Circle(*object);
     cir -> alpha = 0.2;
@@ -104,7 +96,6 @@ void Circle::draw() {
             glVertex2f(x + sinf(angle) * radius, y + cosf(angle) * radius);
         }
         glEnd();
-        
         for (int i = 0; i < shapesTrack.size(); i++) {
             shapesTrack[i] -> alpha = 0.2;
             shapesTrack[i] -> draw();
@@ -114,7 +105,7 @@ void Circle::draw() {
 }
 
 Circle& Circle::operator=(const Circle& circle) {
-    this -> setLocation(circle.getX(), circle.getY());
+    this -> setLocation(circle.x, circle.y);
     this -> setRadius(circle.getRadius());
     this -> setVisible(circle.isVisible());
     this -> setColor(circle.getRed(), circle.getGreen(), circle.getBlue(), circle.getAlpha());
@@ -122,7 +113,7 @@ Circle& Circle::operator=(const Circle& circle) {
 }
 
 bool Circle::operator==(const Circle& circle) const {
-    if (this -> getX() == circle.getX() && this -> getY() == circle.getY() &&
+    if (this -> x == circle.x && this -> y == circle.y &&
         this -> getRadius() == circle.getRadius() &&
         this -> isVisible() == circle.isVisible() &&
         this -> getRed() == circle.getRed() &&
@@ -156,7 +147,7 @@ void Circle::changeColor() {
 }
 
 void Circle::move(int x, int y) {
-    this -> setLocation(this -> getX() + x, this -> getY() + y);
+    this -> setLocation((this -> x) + x, (this -> y) + y);
 }
 
 void Circle::setVisible(bool visible) {
@@ -175,4 +166,3 @@ void Circle::boundaryCoordinates(float &leftX, float &rightX, float &downY, floa
     downY = y - radius;
     topY = y + radius;
 }
-

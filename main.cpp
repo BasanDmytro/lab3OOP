@@ -19,7 +19,7 @@
 using namespace std;
 
 Vector<Shape*> vec;
-Shape *currVecCont;
+Shape *currShape;
 
 bool visibleCurr = true;
 bool animateCurr = false;
@@ -34,43 +34,39 @@ bool boolForMerge = false;
 int numbersOfObgectForMerge = 0;
 int countOfAgregat = 1;
 
-Shape* setCurrentContainer(Shape *cont){
-    currVecCont = cont;
-    currVecCont -> setSelected(true);
-    currVecCont -> setVisible(true);
-    
+Shape* setCurrentShape(Shape *cont){
+    currShape = cont;
+    currShape -> setSelected(true);
+    currShape -> setVisible(true);
     Vector<Shape*>::iterator it;
     for (it = vec.begin(); it < vec.end(); it++)
-        if (currVecCont != (*it)) {
+        if (currShape != (*it)) {
             //  (*it)->setSelected(false); //видимость контура
-            //  (*it) -> alpha = 0.5;
             (*it) -> setVisible(false); //видимость обьекта
-            //   (*it) -> alpha = 0.5;
         }
-    return currVecCont;
+    return currShape;
 }
 
 Shape* selectNext() {
-    if (currVecCont == vec.back())
-        return setCurrentContainer(vec.front());
+    if (currShape == vec.back())
+        return setCurrentShape(vec.front());
     else {
         unsigned long shapeSize = vec.size() - 1;
         for(int i = 0; i < shapeSize; i++) {
-            if (currVecCont == vec[i])
-                return setCurrentContainer(vec[i + 1]);
+            if (currShape == vec[i])
+                return setCurrentShape(vec[i + 1]);
         }
     }
     return 0;
 }
 
-void animateCurrentShapeCont() {
+void animateCurrentShape() {
     if (animateCurr) {
          if (boolForTrack) {
-
-             currVecCont -> move(1, 1);
-             currVecCont -> trace(currVecCont);
+             currShape -> move(1, 1);
+             currShape -> trace(currShape);
          } else {
-             currVecCont -> move(1, 1);
+             currShape -> move(1, 1);
          }
     }
 }
@@ -79,7 +75,7 @@ void mergeShapes() {
     int currForMerge = 0;
     for (int i = 0; i < vec.size(); i++) {
         Shape* stepVecCont = vec[i];
-        if (currVecCont == stepVecCont)
+        if (currShape == stepVecCont)
             currForMerge = i;
     }
     Vector<Shape*> vecForMerge;
@@ -91,79 +87,44 @@ void mergeShapes() {
     } else {
         vec.erase(numbersOfObgectForMerge);
         vec.erase(currForMerge);
-        
     }
     Shape *pp = new ShapeContainer(vecForMerge);
     pp -> setSelected(true);
     vec.push_back(pp);
-    setCurrentContainer(pp);
-}
-
-void changeShapes() {
-    float x11 = currVecCont -> getMinX();
-    float y11 = currVecCont -> getMinY();
-    float x12 = currVecCont -> getMaxX();
-    float y12 = currVecCont -> getMaxY();
-    for (auto i = 0; i < vec.size(); i++) {
-        Shape* stepShape = vec[i];
-        if (currVecCont != stepShape) {
-            float x21 = stepShape -> getMinX();
-            float y21 = stepShape -> getMinY();
-            float x22 = stepShape -> getMaxX();
-            float y22 = stepShape -> getMaxY();
-            if (boolForCheck)
-                //проверям условия пересечения
-                if (fabs(x11) < fabs(x22) && fabs(x12) > fabs(x21) && fabs(y11) < fabs(y22) && fabs(y12) > fabs(y21)) {
-                    if (boolForInsert == false) {
-                        currVecCont -> setScale(0.5);
-                        boolForInsert = true;
-                        boolForCheck = false;
-                    } else {
-                        currVecCont -> setScale(2.0);
-                        boolForInsert = false;
-                        boolForCheck = false;
-                    }
-                }
-        }
-        boolForCheck = true;
-    }
+    setCurrentShape(pp);
 }
 
 void save() {
     ofstream out;
     out.open("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt");
     out.close();
-    Vector<Shape*>::iterator it;
     for (int i = 0; i < vec.size(); i++) {
         vec[i] -> saveToFile();
     }
 }
 
 void findCollisions() {
-    
     for(int i = 0; i < vec.size(); i++) {
         if (boolForCheck) {
-            if (currVecCont -> collided(vec[i]) && vec[i] != currVecCont) {
+            if (currShape -> collided(vec[i]) && vec[i] != currShape) {
                 if (boolForInsert == false) {
-                    currVecCont -> setScale(0.5);
+                    currShape -> setScale(0.5);
                     boolForInsert = true;
                     boolForCheck = false;
                 } else {
-                    currVecCont -> setScale(2.0);
+                    currShape -> setScale(2.0);
                     boolForInsert = false;
                     boolForCheck = false;
                 }
             }
             boolForCheck = true;
         }
-        
     }
 }
 
-
 void loadFromFile() {
     ifstream in;
-    auto countOfString = 0;
+    int countOfString = 0;
     char S;
     in.open("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt");
     while(!in.eof()) {
@@ -173,12 +134,12 @@ void loadFromFile() {
         }
     }
     in.close();
-    auto ii = 0;
+    int countForReadFromFile = 0;
     string *str = new string[countOfString + 1];
     ifstream fin1("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt");
     while (fin1) {
-        getline(fin1, str[ii]);
-        ii++;
+        getline(fin1, str[countForReadFromFile]);
+        countForReadFromFile++;
     }
     fin1.close();
     for (int i = 0; i < countOfString; i++) {
@@ -194,142 +155,142 @@ void loadFromFile() {
         float blue = 0;
         float alpha = 0;
         if (str[i][0] == 'A') {
-            Vector<string> arr1;
-            Vector<string> arr2;
+            Vector<string> arrayForSplitInVectorFirst;
+            Vector<string> arrayForSplitInVectorSecond;
             Vector<Shape*> vecForMerge;
             string delim(" ");
-            size_t prev = 0;
-            size_t next;
-            size_t delta = delim.length();
+            unsigned long prev = 0;
+            unsigned long next;
+            unsigned long delta = delim.length();
             string delim1(" ");
-            size_t prev1 = 0;
-            size_t next1;
-            size_t delta1 = delim1.length();
+            unsigned long prev1 = 0;
+            unsigned long next1;
+            unsigned long delta1 = delim1.length();
             while( ( next = str[i + 1].find( delim, prev ) ) != string::npos ){
-                arr1.push_back( str[i + 1].substr( prev, next-prev ) );
+                arrayForSplitInVectorFirst.push_back( str[i + 1].substr( prev, next - prev ) );
                 prev = next + delta;
             }
-            arr1.push_back( str[i + 1].substr( prev ) );
+            arrayForSplitInVectorFirst.push_back( str[i + 1].substr( prev ) );
             
             while( ( next1 = str[i + 2].find( delim1, prev1 ) ) != string::npos ){
-                arr2.push_back( str[i + 2].substr( prev1, next1-prev1 ) );
+                arrayForSplitInVectorSecond.push_back( str[i + 2].substr( prev1, next1 - prev1 ) );
                 prev1 = next1 + delta1;
             }
-            arr2.push_back( str[i + 2].substr( prev1 ) );
-            name = arr1[0];
-            name2 = arr2[0];
+            arrayForSplitInVectorSecond.push_back( str[i + 2].substr( prev1 ) );
+            name = arrayForSplitInVectorFirst[0];
+            name2 = arrayForSplitInVectorSecond[0];
             if (name == "C") {
-                x = stoi(arr1[1]);
-                y = stoi(arr1[2]);
-                radius = stoi(arr1[3]);
-                red = stof(arr1[4]);
-                green = stof(arr1[5]);
-                blue = stof(arr1[6]);
-                alpha = stof(arr1[7]);
-                Shape *shape1 = new Circle(x, y, radius, red, green, blue, alpha);
-                vecForMerge.push_back(shape1);
+                x = stoi(arrayForSplitInVectorFirst[1]);
+                y = stoi(arrayForSplitInVectorFirst[2]);
+                radius = stoi(arrayForSplitInVectorFirst[3]);
+                red = stof(arrayForSplitInVectorFirst[4]);
+                green = stof(arrayForSplitInVectorFirst[5]);
+                blue = stof(arrayForSplitInVectorFirst[6]);
+                alpha = stof(arrayForSplitInVectorFirst[7]);
+                Shape *circle = new Circle(x, y, radius, red, green, blue, alpha);
+                vecForMerge.push_back(circle);
             } else if (name == "R") {
-                x = stoi(arr1[1]);
-                y = stoi(arr1[2]);
-                h = stoi(arr1[3]);
-                w = stoi(arr1[4]);
-                red = stof(arr1[5]);
-                green = stof(arr1[6]);
-                blue = stof(arr1[7]);
-                alpha = stof(arr1[8]);
-                Shape *shape1 = new Rectangle(x, y, h, w, red, green, blue, alpha);
-                vecForMerge.push_back(shape1);
+                x = stoi(arrayForSplitInVectorFirst[1]);
+                y = stoi(arrayForSplitInVectorFirst[2]);
+                h = stoi(arrayForSplitInVectorFirst[3]);
+                w = stoi(arrayForSplitInVectorFirst[4]);
+                red = stof(arrayForSplitInVectorFirst[5]);
+                green = stof(arrayForSplitInVectorFirst[6]);
+                blue = stof(arrayForSplitInVectorFirst[7]);
+                alpha = stof(arrayForSplitInVectorFirst[8]);
+                Shape *rectangle = new Rectangle(x, y, h, w, red, green, blue, alpha);
+                vecForMerge.push_back(rectangle);
             }
             if (name2 == "C") {
-                x = stoi(arr2[1]);
-                y = stoi(arr2[2]);
-                radius = stoi(arr2[3]);
-                red = stof(arr2[4]);
-                green = stof(arr2[5]);
-                blue = stof(arr2[6]);
-                alpha = stof(arr2[7]);
-                Shape *shape2 = new Circle(x, y, radius, red, green, blue, alpha);
-                vecForMerge.push_back(shape2);
+                x = stoi(arrayForSplitInVectorSecond[1]);
+                y = stoi(arrayForSplitInVectorSecond[2]);
+                radius = stoi(arrayForSplitInVectorSecond[3]);
+                red = stof(arrayForSplitInVectorSecond[4]);
+                green = stof(arrayForSplitInVectorSecond[5]);
+                blue = stof(arrayForSplitInVectorSecond[6]);
+                alpha = stof(arrayForSplitInVectorSecond[7]);
+                Shape *circle = new Circle(x, y, radius, red, green, blue, alpha);
+                vecForMerge.push_back(circle);
             } else if (name2 == "R") {
-                x = stoi(arr2[1]);
-                y = stoi(arr2[2]);
-                h = stoi(arr2[3]);
-                w = stoi(arr2[4]);
-                red = stof(arr2[5]);
-                green = stof(arr2[6]);
-                blue = stof(arr2[7]);
-                alpha = stof(arr2[8]);
-                Shape *shape2 = new Rectangle(x, y, h, w, red, green, blue, alpha);
-                vecForMerge.push_back(shape2);
+                x = stoi(arrayForSplitInVectorSecond[1]);
+                y = stoi(arrayForSplitInVectorSecond[2]);
+                h = stoi(arrayForSplitInVectorSecond[3]);
+                w = stoi(arrayForSplitInVectorSecond[4]);
+                red = stof(arrayForSplitInVectorSecond[5]);
+                green = stof(arrayForSplitInVectorSecond[6]);
+                blue = stof(arrayForSplitInVectorSecond[7]);
+                alpha = stof(arrayForSplitInVectorSecond[8]);
+                Shape *rectangle = new Rectangle(x, y, h, w, red, green, blue, alpha);
+                vecForMerge.push_back(rectangle);
             }
-            Shape *pp = new ShapeContainer(vecForMerge);
+            Shape *shapeContainer = new ShapeContainer(vecForMerge);
             if (alpha == 0.2) {
-                pp -> setSelected(false);
-                pp -> setVisible(false);
+                shapeContainer -> setSelected(false);
+                shapeContainer -> setVisible(false);
             } else {
-                pp -> setSelected(true);
-                pp -> setVisible(true);
+                shapeContainer -> setSelected(true);
+                shapeContainer -> setVisible(true);
             }
-            vec.push_back(pp);
+            vec.push_back(shapeContainer);
             str[i + 1] = "";
             str[i + 2] = "";
         }
         if (str[i][0] == 'C') {
-            Vector<string> arr;
+            Vector<string> vectorForSplitString;
             string delim(" ");
-            size_t prev = 0;
-            size_t next;
-            size_t delta = delim.length();
+            unsigned long prev = 0;
+            unsigned long next;
+            unsigned long delta = delim.length();
             while( ( next = str[i].find( delim, prev ) ) != string::npos ){
-                arr.push_back( str[i].substr( prev, next-prev ) );
+                vectorForSplitString.push_back( str[i].substr( prev, next - prev ) );
                 prev = next + delta;
             }
-            arr.push_back( str[i].substr( prev ) );
-            x = stof(arr[1]);
-            y = stof(arr[2]);
-            radius = stof(arr[3]);
-            red = stof(arr[4]);
-            green = stof(arr[5]);
-            blue = stof(arr[6]);
-            alpha = stof(arr[7]);
-            Shape *shape = new Circle(x, y, radius, red, green, blue, alpha);
+            vectorForSplitString.push_back( str[i].substr( prev ) );
+            x = stof(vectorForSplitString[1]);
+            y = stof(vectorForSplitString[2]);
+            radius = stof(vectorForSplitString[3]);
+            red = stof(vectorForSplitString[4]);
+            green = stof(vectorForSplitString[5]);
+            blue = stof(vectorForSplitString[6]);
+            alpha = stof(vectorForSplitString[7]);
+            Shape *circle = new Circle(x, y, radius, red, green, blue, alpha);
             if (alpha == 0.2) {
-                shape -> setSelected(false);
-                shape -> setVisible(false);
+                circle -> setSelected(false);
+                circle -> setVisible(false);
             } else {
-                shape -> setSelected(true);
-                shape -> setVisible(true);
+                circle -> setSelected(true);
+                circle -> setVisible(true);
             }
-            vec.push_back(shape);
+            vec.push_back(circle);
         } else if (str[i][0] == 'R') {
-            Vector<string> arr;
+            Vector<string> vectorForSplitString;
             string delim(" ");
-            size_t prev = 0;
-            size_t next;
-            size_t delta = delim.length();
+            unsigned long prev = 0;
+            unsigned long next;
+            unsigned long delta = delim.length();
             while( ( next = str[i].find( delim, prev ) ) != string::npos ){
-                arr.push_back( str[i].substr( prev, next-prev ) );
+                vectorForSplitString.push_back( str[i].substr( prev, next - prev ) );
                 prev = next + delta;
             }
-            arr.push_back( str[i].substr( prev ) );
-            x = stof(arr[1]);
-            y = stof(arr[2]);
-            h = stof(arr[3]);
-            w = stof(arr[4]);
-            red = stof(arr[5]);
-            green = stof(arr[6]);
-            blue = stof(arr[7]);
-            alpha = stof(arr[8]);
-            Shape *shape1 = new Rectangle(x, y, h, w, red, green, blue, alpha);
+            vectorForSplitString.push_back( str[i].substr( prev ) );
+            x = stof(vectorForSplitString[1]);
+            y = stof(vectorForSplitString[2]);
+            h = stof(vectorForSplitString[3]);
+            w = stof(vectorForSplitString[4]);
+            red = stof(vectorForSplitString[5]);
+            green = stof(vectorForSplitString[6]);
+            blue = stof(vectorForSplitString[7]);
+            alpha = stof(vectorForSplitString[8]);
+            Shape *rectangle = new Rectangle(x, y, h, w, red, green, blue, alpha);
             if (alpha == 0.2) {
-                shape1 -> setSelected(false);
-                shape1 -> setVisible(false);
+                rectangle -> setSelected(false);
+                rectangle -> setVisible(false);
             } else {
-                shape1 -> setSelected(true);
-                shape1 -> setVisible(true);
+                rectangle -> setSelected(true);
+                rectangle -> setVisible(true);
             }
-            vec.push_back(shape1);
-            setCurrentContainer(shape1);
+            vec.push_back(rectangle);
+            setCurrentShape(rectangle);
         }
     }
 }
@@ -338,12 +299,12 @@ void render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     Vector<Shape*>::iterator it;
     for (int i = 0; i < vec.size(); i++) {
-        if (vec[i] != currVecCont) {
+        if (vec[i] != currShape) {
             vec[i] -> draw();
         }
     }
-    if (currVecCont != NULL) currVecCont -> draw();
-    animateCurrentShapeCont();
+    if (currShape != NULL) currShape -> draw();
+    animateCurrentShape();
     glutSwapBuffers();
 }
 
@@ -356,27 +317,27 @@ void resizeWindow(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-void idle(){
+void idle() {
     glutPostRedisplay();
 }
 
 void processNormalKeys(unsigned char key, int x, int y) {
     if (key == '1') {
-        Shape *newShape = new Rectangle(winW / 2, winH / 2, 50, 50, 0.0, 0.0, 1.0, 1.0);
-        newShape -> setVisible(true);
-        vec.push_back(newShape);
-        setCurrentContainer(newShape);
+        Shape *newRectangle = new Rectangle(winW / 2, winH / 2, 50, 50, 0.0, 0.0, 1.0, 1.0);
+        newRectangle -> setVisible(true);
+        vec.push_back(newRectangle);
+        setCurrentShape(newRectangle);
     } else if (key == '2') {
-        Shape *newCont = new Circle(winW / 2, winH / 2, 50, 0.0, 0.0, 1.0, 1.0);
-        newCont -> setVisible(true);
-        vec.push_back(newCont);
-        setCurrentContainer(newCont);
+        Shape *newCircle = new Circle(winW / 2, winH / 2, 50, 0.0, 0.0, 1.0, 1.0);
+        newCircle -> setVisible(true);
+        vec.push_back(newCircle);
+        setCurrentShape(newCircle);
     } else if ((int)key == 9) {
         selectNext();
     } else if (key == 'm' || key == 'M') {
         mergeShapes();
     } else if (key == 'c' || key == 'C') {
-        currVecCont -> changeColor();
+        currShape -> changeColor();
     } else if (key == 'p' || key == 'P') {
         if (animateCurr) {
             animateCurr = false;
@@ -384,24 +345,23 @@ void processNormalKeys(unsigned char key, int x, int y) {
             animateCurr = true;
         }
     } else if (key == 'z' || key == 'Z') {
-        currVecCont -> setScale(2.0);
+        currShape -> setScale(2.0);
     } else if(key == 'h' || key == 'H') {
         if (visibleCurr) {
-            currVecCont -> setVisible(false);
-            currVecCont -> setSelected(false);
+            currShape -> setVisible(false);
+            currShape -> setSelected(false);
             visibleCurr = false;
         } else {
-            currVecCont -> setVisible(true);
-            currVecCont -> setSelected(true);
+            currShape -> setVisible(true);
+            currShape -> setSelected(true);
             visibleCurr = true;
         }
     } else if (key == 'x' || key == 'X') {
-        currVecCont -> setScale(0.5);
+        currShape -> setScale(0.5);
     } else if (key == 'q' || key == 'Q') {
         save();
-        
     } else if (key == 's' || key == 'S') {
-        currVecCont -> toStandart();
+        currShape -> toStandart();
     } else if (key == 'l' || key == 'l') {
         loadFromFile();
     } else if (key == 't' || key == 'T') {
@@ -414,7 +374,7 @@ void processNormalKeys(unsigned char key, int x, int y) {
     } else if ((int)key == 61) {
         for (int i = 0; i < vec.size(); i++) {
             Shape* stepVecCont = vec[i];
-            if (currVecCont == stepVecCont)
+            if (currShape == stepVecCont)
                 numbersOfObgectForMerge = i;
         }
     }
@@ -423,43 +383,39 @@ void processNormalKeys(unsigned char key, int x, int y) {
 void processSpecialKeys(int key, int x, int y) {
     if (key == 101) {
         if (boolForTrack) {
-            currVecCont -> move(0, 10);
-            currVecCont -> trace(currVecCont);
+            currShape -> move(0, 10);
+            currShape -> trace(currShape);
         } else {
-            currVecCont -> move(0, 10);
+            currShape -> move(0, 10);
         }
         findCollisions();
-       // changeShapes();
     }
     else if (key == 102) {
         if (boolForTrack) {
-            currVecCont -> move(10, 0);
-            currVecCont -> trace(currVecCont);
+            currShape -> move(10, 0);
+            currShape -> trace(currShape);
         } else {
-            currVecCont -> move(10, 0);
+            currShape -> move(10, 0);
         }
         findCollisions();
-        //changeShapes();
     }
     else if (key == 103) {
         if (boolForTrack) {
-            currVecCont -> move(0, -10);
-            currVecCont -> trace(currVecCont);
+            currShape -> move(0, -10);
+            currShape -> trace(currShape);
         } else {
-            currVecCont -> move(0, -10);
+            currShape -> move(0, -10);
         }
         findCollisions();
-        //changeShapes();
     }
     else if (key == 100) {
         if (boolForTrack) {
-            currVecCont -> move(-10, 0);
-            currVecCont -> trace(currVecCont);
+            currShape -> move(-10, 0);
+            currShape -> trace(currShape);
         } else {
-            currVecCont -> move(-10, 0);
+            currShape -> move(-10, 0);
         }
         findCollisions();
-        //changeShapes();
     }
 }
 
@@ -467,11 +423,11 @@ int main (int argc, char ** argv) {
     srand(time_t(NULL));
     glutInit(&argc, argv);
     winW = 640; winH = 480;
-    Shape *shapes = new Circle(winW / 2, winH / 2, 50, 0.0, 0.0, 1.0, 1.0);
-    shapes -> setVisible(true);
-    shapes -> setSelected(true);
-    vec.push_back(shapes);
-    setCurrentContainer(shapes);
+    Shape *circle = new Circle(winW / 2, winH / 2, 50, 0.0, 0.0, 1.0, 1.0);
+    circle -> setVisible(true);
+    circle -> setSelected(true);
+    vec.push_back(circle);
+    setCurrentShape(circle);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);

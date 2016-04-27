@@ -11,9 +11,7 @@
 
 class Shape {
 protected:
-    //location
-    float x;
-    float y;
+    
     //size
     float h;
     float w;
@@ -36,22 +34,16 @@ public:
     float alpha;
     bool visible;
     bool selected;
+    float x;
+    float y;
     
     virtual void saveToFile();
     
-    float getX() const;
-    float getY() const;
     void setLocation(float x, float y);
     
     float getWidth() const;
     float getHeight() const;
     void setSize(float h, float w);
-    
-    //bounds
-    virtual float getMinX() const;
-    virtual float getMinY() const;
-    virtual float getMaxX() const;
-    virtual float getMaxY() const;
     
     bool isVisible() const;
     

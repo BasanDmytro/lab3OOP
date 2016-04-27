@@ -22,7 +22,6 @@ protected:
 public:
     bool selected;
     bool isSelected() const;
-    void setSelected(bool selected);
     
     Vector<Shape*> getShapes();
     
@@ -50,8 +49,6 @@ public:
     
     virtual void setScale(float scalef);
     
-    virtual void recalculateBounds();
-    
     virtual void saveToFile();
     
     virtual void changeColor();
@@ -60,13 +57,7 @@ public:
     
     virtual void move(int x, int y);
     
-    virtual float getMinX();
-    virtual float getMinY();
-    virtual float getMaxX();
-    virtual float getMaxY();
-    
     virtual void boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY);
-
 };
 
 

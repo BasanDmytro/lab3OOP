@@ -25,11 +25,10 @@ ShapeContainer::ShapeContainer(Shape* shape) {
     this -> selected = true;
     this -> setColor(0.0, 0.0, 1.0, 0.5);
     this -> add(shape);
-    this -> recalculateBounds();
 }
 
 ShapeContainer::ShapeContainer(Vector<Shape*> xx) {
-    for (auto i = 0; i < xx.size(); ++i) {
+    for (int i = 0; i < xx.size(); ++i) {
         shapes.push_back(xx[i]);
     }
 }
@@ -46,7 +45,6 @@ void ShapeContainer::setScale(float scalef) {
     unsigned long shapesSize = shapes.size();
     for(int i = 0; i < shapesSize; i++)
         shapes[i] -> setScale(scalef);
-    this -> recalculateBounds();
 }
 
 void ShapeContainer::toStandart() {
@@ -55,15 +53,10 @@ void ShapeContainer::toStandart() {
         shapes[i] -> toStandart();
     this -> setColor(1.0, 1.0, 0.0, 1.0);
     this -> setSize(2 * standartRadius, 2 * standartRadius);
-    this -> recalculateBounds();
 }
 
 bool ShapeContainer::isSelected() const {
     return this -> selected;
-}
-
-void ShapeContainer::setSelected(bool selected) {
-    this -> selected = selected;
 }
 
 Vector<Shape*> ShapeContainer::getShapes() {
@@ -74,33 +67,15 @@ void ShapeContainer::add(Shape* shape) {
     this -> shapes.push_back(shape);
     if (shapes.size() > 1)
         shape -> setColor(shapes[0] -> getRed(), shapes[0] -> getGreen(), shapes[0] -> getBlue(), shapes[0] -> getAlpha());
-    this -> recalculateBounds();
 }
 
 void ShapeContainer::remove(Shape* shape) {
     for (int i = 0; i < shapes.size(); i++)
         if (shapes[i] == shape) shapes.erase(i);
-    this -> recalculateBounds();
-}
-
-void ShapeContainer::recalculateBounds() {
-    unsigned long shapesSize = shapes.size();
-    float minX = shapes[0] -> getMinX();
-    float minY = shapes[0] -> getMinY();
-    float maxX = shapes[0] -> getMaxX();
-    float maxY = shapes[0] -> getMaxY();
-    for(int i = 1; i < shapesSize; i++) {
-        if (shapes[i] -> getMinX() < minX) minX = shapes[i] -> getMinX();
-        if (shapes[i] -> getMinY() < minY) minY = shapes[i] -> getMinY();
-        if (shapes[i] -> getMaxX() > maxX) maxX = shapes[i] -> getMaxX();
-        if (shapes[i] -> getMaxY() > maxY) maxY = shapes[i] -> getMaxY();
-    }
-    this -> setLocation(minX, minY);
-    this -> setSize(maxX - minX, maxY - minY);
 }
 
 void ShapeContainer::move(int x, int y) {
-    this -> setLocation(this -> getX() + x, this -> getY() + y);
+    this -> setLocation((this -> x) + x, (this -> y) + y);
     for (int i = 0; i < shapes.size(); i++)
         shapes[i] -> move(x, y);
 }
@@ -151,46 +126,6 @@ void ShapeContainer::changeColor() {
     this -> setColor(red, green, blue, alpha);
     for (int i = 0; i < shapes.size(); i++)
         shapes[i] -> setColor(red, green, blue, alpha);
-}
-
-float ShapeContainer::getMinX() {
-    float minX = 100000000;
-    for (int i = 0; i < shapes.size(); i++) {
-        if (shapes[i] -> getMinX() < minX) {
-            minX = shapes[i] -> getMinX();
-        }
-    }
-    return minX;
-}
-
-float ShapeContainer::getMinY()  {
-    float minY = 100000000;
-    for (int i = 0; i < shapes.size(); i++) {
-        if (shapes[i] -> getMinY() < minY) {
-            minY = shapes[i] -> getMinY();
-        }
-    }
-    return minY;
-}
-
-float ShapeContainer::getMaxX()  {
-    float maxX = 0;
-    for (int i = 0; i < shapes.size(); i++) {
-        if (shapes[i] -> getMaxX() < maxX) {
-            maxX = shapes[i] -> getMaxX();
-        }
-    }
-    return maxX;
-}
-
-float ShapeContainer::getMaxY()  {
-    float maxY = 0;
-    for (int i = 0; i < shapes.size(); i++) {
-        if (shapes[i] -> getMaxY() < maxY) {
-            maxY = shapes[i] -> getMaxY();
-        }
-    }
-    return maxY;
 }
 
 void ShapeContainer::boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY) {

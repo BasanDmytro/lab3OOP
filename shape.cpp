@@ -43,15 +43,11 @@ Shape::Shape(float x, float y, float w, float h, float r, float g, float b, floa
 }
 
 Shape::Shape(const Shape& shape) {
-    this -> setLocation(shape.getX(), shape.getY());
+    this -> setLocation(shape.x, shape.y);
     this -> setSize(shape.getHeight(), shape.getWidth());
     this -> setColor(shape.getRed(), shape.getGreen(), shape.getBlue(), shape.getAlpha());
     this -> setVisible(shape.isVisible());
 }
-
-float Shape::getX() const{ return x; }
-
-float Shape::getY() const{ return y; }
 
 void  Shape::setLocation(float x, float y) {
     this -> x = x;
@@ -66,14 +62,6 @@ void  Shape::setSize(float w, float h){
     this -> h = h;
     this -> w = w;
 }
-
-float Shape::getMinX() const { return this -> x; }
-
-float Shape::getMinY() const { return this -> y; }
-
-float Shape::getMaxX() const { return this -> x + (this -> w); }
-
-float Shape::getMaxY() const { return this -> y + (this -> h); }
 
 bool  Shape::isVisible() const { return visible; }
 
@@ -93,7 +81,7 @@ void  Shape::setColor(float r, float g, float b, float alpha) {
 }
 
 Shape& Shape::operator=(const Shape& shape) {
-    this -> setLocation(shape.getX(), shape.getY());
+    this -> setLocation(shape.x, shape.y);
     this -> setSize(shape.getHeight(), shape.getWidth());
     this -> setColor(shape.getRed(), shape.getGreen(), shape.getBlue(), shape.getAlpha());
     this -> setVisible(shape.isVisible());
@@ -106,7 +94,7 @@ void Shape::setScale(float scalef) {
 }
 
 bool Shape::operator==(const Shape& shape) const {
-    if (this -> getX() == shape.getX() && this -> getY() == shape.getY() &&
+    if (this -> x == shape.x && this -> y == shape.y &&
         this -> getWidth() == shape.getWidth() && this -> getHeight() == shape.getHeight() &&
         this -> isVisible() == shape.isVisible() &&
         this -> getRed() == shape.getRed() &&

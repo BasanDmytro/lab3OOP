@@ -24,11 +24,6 @@ public:
     
     virtual void saveToFile();
     
-    virtual float getMinX() const;
-    virtual float getMinY() const;
-    virtual float getMaxX() const;
-    virtual float getMaxY() const;
-    
     Circle();
     Circle(float x, float y, float radius, float r, float g, float b, float alpha);
     Circle(const Circle& circle);

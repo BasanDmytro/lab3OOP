@@ -29,13 +29,7 @@ public:
     virtual void changeColor();
     virtual void setVisible(bool visible);
     virtual void move(int x, int y);
-    
-    
-    virtual float getMinX() const;
-    virtual float getMinY() const;
-    virtual float getMaxX() const;
-    virtual float getMaxY() const;
-    
+
     Rectangle& operator=(const Rectangle& rect);
     bool operator==(const Rectangle& rect) const;
     

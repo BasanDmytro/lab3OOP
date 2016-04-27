@@ -39,7 +39,7 @@ void Rectangle::trace(Shape *object) {
 }
 
 Rectangle& Rectangle::operator=(const Rectangle& rect) {
-    this -> setLocation(rect.getX(), rect.getY());
+    this -> setLocation(rect.x, rect.y);
     this -> setSize(rect.getWidth(), rect.getHeight());
     this -> setColor(rect.getRed(), rect.getGreen(), rect.getBlue(), rect.getAlpha());
     this -> setVisible(rect.isVisible());
@@ -47,7 +47,7 @@ Rectangle& Rectangle::operator=(const Rectangle& rect) {
 }
 
 bool Rectangle::operator==(const Rectangle& rect) const {
-    if (this -> getX() == rect.getX() && this -> getY() == rect.getY() &&
+    if (this -> x == rect.x && this -> y == rect.y &&
         this -> getWidth() == rect.getWidth() && this -> getHeight() == rect.getHeight() &&
         this -> isVisible() == rect.isVisible() &&
         this -> getRed() == rect.getRed() &&
@@ -101,16 +101,8 @@ void Rectangle::setVisible(bool visible) {
 }
 
 void Rectangle::move(int x, int y) {
-    this -> setLocation(this -> getX() + x, this -> getY() + y);
+    this -> setLocation((this -> x) + x, (this -> y) + y);
 }
-
-float Rectangle::getMinX() const { return x ; }
-
-float Rectangle::getMinY() const { return y ; }
-
-float Rectangle::getMaxX() const { return x + w; }
-
-float Rectangle::getMaxY() const { return y + h; }
 
 void Rectangle::boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY) {
     leftX = x;

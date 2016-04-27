@@ -107,12 +107,12 @@ T& Vector<T>::operator[](const int &index) {
 
 template <typename T>
 bool Vector<T>::resize() {
-    T* NewArea = new T[capacity * 2];
+    T* NewArray = new T[capacity * 2];
     for (int i = 0; i != this->Size; i++) {
-        NewArea[i] = this->operator[](i);
+        NewArray[i] = this->operator[](i);
     }
     Size == 1 ? delete arr : delete[] arr;
-    arr = NewArea;
+    arr = NewArray;
     capacity *= 2;
     return true;
 }
