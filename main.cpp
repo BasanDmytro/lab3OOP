@@ -139,6 +139,28 @@ void save() {
     }
 }
 
+void findCollisions() {
+    
+    for(int i = 0; i < vec.size(); i++) {
+        if (boolForCheck) {
+            if (currVecCont -> collided(vec[i]) && vec[i] != currVecCont) {
+                if (boolForInsert == false) {
+                    currVecCont -> setScale(0.5);
+                    boolForInsert = true;
+                    boolForCheck = false;
+                } else {
+                    currVecCont -> setScale(2.0);
+                    boolForInsert = false;
+                    boolForCheck = false;
+                }
+            }
+            boolForCheck = true;
+        }
+        
+    }
+}
+
+
 void loadFromFile() {
     ifstream in;
     auto countOfString = 0;
@@ -406,7 +428,8 @@ void processSpecialKeys(int key, int x, int y) {
         } else {
             currVecCont -> move(0, 10);
         }
-        changeShapes();
+        findCollisions();
+       // changeShapes();
     }
     else if (key == 102) {
         if (boolForTrack) {
@@ -415,7 +438,8 @@ void processSpecialKeys(int key, int x, int y) {
         } else {
             currVecCont -> move(10, 0);
         }
-        changeShapes();
+        findCollisions();
+        //changeShapes();
     }
     else if (key == 103) {
         if (boolForTrack) {
@@ -424,7 +448,8 @@ void processSpecialKeys(int key, int x, int y) {
         } else {
             currVecCont -> move(0, -10);
         }
-        changeShapes();
+        findCollisions();
+        //changeShapes();
     }
     else if (key == 100) {
         if (boolForTrack) {
@@ -433,7 +458,8 @@ void processSpecialKeys(int key, int x, int y) {
         } else {
             currVecCont -> move(-10, 0);
         }
-        changeShapes();
+        findCollisions();
+        //changeShapes();
     }
 }
 

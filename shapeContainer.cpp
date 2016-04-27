@@ -135,10 +135,10 @@ void ShapeContainer::setVisible(bool visible) {
 
 void ShapeContainer::saveToFile() {
     std::ofstream out;
-    out.open("/Users/admin/Desktop/lab3 чек/data.txt", std::ios_base::app );
+    out.open("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt", std::ios_base::app );
     out << "A" << std::endl;
     out.close();
-    out.open("/Users/admin/Desktop/lab3 чек/data.txt", std::ios_base::app );
+    out.open("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt", std::ios_base::app );
     for (int i = 0; i < shapes.size(); i++)
         shapes[i] -> saveToFile();
     out.close();
@@ -151,4 +151,56 @@ void ShapeContainer::changeColor() {
     this -> setColor(red, green, blue, alpha);
     for (int i = 0; i < shapes.size(); i++)
         shapes[i] -> setColor(red, green, blue, alpha);
+}
+
+float ShapeContainer::getMinX() {
+    float minX = 100000000;
+    for (int i = 0; i < shapes.size(); i++) {
+        if (shapes[i] -> getMinX() < minX) {
+            minX = shapes[i] -> getMinX();
+        }
+    }
+    return minX;
+}
+
+float ShapeContainer::getMinY()  {
+    float minY = 100000000;
+    for (int i = 0; i < shapes.size(); i++) {
+        if (shapes[i] -> getMinY() < minY) {
+            minY = shapes[i] -> getMinY();
+        }
+    }
+    return minY;
+}
+
+float ShapeContainer::getMaxX()  {
+    float maxX = 0;
+    for (int i = 0; i < shapes.size(); i++) {
+        if (shapes[i] -> getMaxX() < maxX) {
+            maxX = shapes[i] -> getMaxX();
+        }
+    }
+    return maxX;
+}
+
+float ShapeContainer::getMaxY()  {
+    float maxY = 0;
+    for (int i = 0; i < shapes.size(); i++) {
+        if (shapes[i] -> getMaxY() < maxY) {
+            maxY = shapes[i] -> getMaxY();
+        }
+    }
+    return maxY;
+}
+
+void ShapeContainer::boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY) {
+    float left, right, down, top;
+    shapes[0]->boundaryCoordinates(leftX, rightX, downY, topY);
+    for(int i = 0; i< shapes.size(); i++) {
+        shapes[i] -> boundaryCoordinates(left, right, down, top);
+        leftX = left < leftX ? left : leftX;
+        rightX = right > rightX ? right : rightX;
+        downY = down < downY ? down : downY;
+        topY = top > topY ? top : topY;
+    }
 }

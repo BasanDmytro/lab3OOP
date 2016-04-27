@@ -136,7 +136,7 @@ bool Circle::operator==(const Circle& circle) const {
 
 void Circle::saveToFile() {
     std::ofstream out;
-    out.open("/Users/admin/Desktop/lab3 чек/data.txt", std::ios_base::app );
+    out.open("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt", std::ios_base::app );
     out << "C" << " ";
     out << x << " " << y << " ";
     out << radius << " ";
@@ -167,5 +167,12 @@ void Circle::setVisible(bool visible) {
         this -> visible = true;
         this -> alpha = 0.2;
     }
+}
+
+void Circle::boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY) {
+    leftX = x - radius;
+    rightX = x + radius;
+    downY = y - radius;
+    topY = y + radius;
 }
 

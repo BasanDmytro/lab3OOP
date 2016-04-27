@@ -121,3 +121,23 @@ bool Shape::operator==(const Shape& shape) const {
 void Shape::setSelected(bool selected) {
     this -> selected = selected;
 }
+
+void Shape::boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY) {
+    leftX = x;
+    rightX = x + w;
+    downY = y;
+    topY = y + h;
+}
+
+bool Shape::collided(Shape *shape) {
+    float left, right, down, top;
+    boundaryCoordinates(left, right, down, top);
+    float l, r, d, t;
+    shape->boundaryCoordinates(l, r, d, t);
+    if (r > left &&
+        l < right &&
+        t > down &&
+        d < top)
+        return true;
+    return false;
+}

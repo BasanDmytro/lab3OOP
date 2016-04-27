@@ -59,6 +59,14 @@ public:
     virtual void setVisible(bool visible);
     
     virtual void move(int x, int y);
+    
+    virtual float getMinX();
+    virtual float getMinY();
+    virtual float getMaxX();
+    virtual float getMaxY();
+    
+    virtual void boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY);
+
 };
 
 

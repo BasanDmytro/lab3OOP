@@ -45,6 +45,8 @@ public:
     
     virtual void changeColor();
     
+    virtual void boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY);
+    
     virtual void setVisible(bool visible);
     
     Circle& operator = (const Circle& circle);

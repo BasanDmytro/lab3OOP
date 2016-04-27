@@ -61,7 +61,7 @@ bool Rectangle::operator==(const Rectangle& rect) const {
 
 void Rectangle::saveToFile() {
     std::ofstream out;
-    out.open("/Users/admin/Desktop/lab3 чек/data.txt", std::ios_base::app );
+    out.open("/Users/admin/Desktop/C++/Лабы по ООП/lab3/data.txt", std::ios_base::app );
     out << "R" << " ";
     out << x << " " << y << " ";
     out << h << " " << w << " ";
@@ -102,4 +102,19 @@ void Rectangle::setVisible(bool visible) {
 
 void Rectangle::move(int x, int y) {
     this -> setLocation(this -> getX() + x, this -> getY() + y);
+}
+
+float Rectangle::getMinX() const { return x ; }
+
+float Rectangle::getMinY() const { return y ; }
+
+float Rectangle::getMaxX() const { return x + w; }
+
+float Rectangle::getMaxY() const { return y + h; }
+
+void Rectangle::boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY) {
+    leftX = x;
+    rightX = x + w;
+    downY = y ;
+    topY = y + h;
 }

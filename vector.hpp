@@ -33,7 +33,7 @@ public:
     };
     Vector();
     Vector(const Vector<T> &Q);
-    T operator[](const int &index);
+    T& operator[](const int &index);
     void push_back(const T &value);
     void clear();
     T back();
@@ -101,7 +101,7 @@ void Vector<T>::push_back(const T &value) {
 }
 
 template <typename T>
-T Vector<T>::operator[](const int &index) {
+T& Vector<T>::operator[](const int &index) {
     return arr[index];
 }
 

@@ -80,6 +80,10 @@ public:
     
     virtual void move(int x, int y);
     
+    virtual void boundaryCoordinates(float &leftX, float &rightX, float &downY, float &topY);
+    
+    virtual bool collided(Shape *shape);
+    
     Shape();
     Shape(float x, float y, float h, float w, float r, float g, float b, float alpha);
     Shape(const Shape& shape);
